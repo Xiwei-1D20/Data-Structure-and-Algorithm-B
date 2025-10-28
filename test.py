@@ -1,5 +1,7 @@
 from math import sqrt
-i = 10
-print(i*[None])
+i = 4
+print(list(range(i))[:2])
+print(list(range(i))[2])
+print(list(range(i))[3:])
 
 
