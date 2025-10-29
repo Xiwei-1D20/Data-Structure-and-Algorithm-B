@@ -1,39 +1,43 @@
 from collections import deque
 from typing import List, Optional
 
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.children = []
+
 def wood(s):
     s = s.split()
     node_num_of_subnode = []
-    tree = dict()
     for i in range(0,len(s),2):
         temp = [s[i],int(s[i+1])]
         node_num_of_subnode.append(temp)
-    q0 = deque(node_num_of_subnode)
-    print(q0)
-    #利用字典来形成树
-    def backtrack(node: list):
-        temp_subnodes = []
-        q1 = deque()
-        for i in range(node[1]):
-            temp_subnode = q0.popleft()
-            q1.append(temp_subnode)
-            temp_subnodes.append(temp_subnode[0])
-        tree[node[0]] = temp_subnodes
-        for _ in range(node[1]):
-            backtrack(q1.popleft())
+    q0 = deque([node_num_of_subnode[0]])
 
-    head = q0.popleft()
-    backtrack(head)
+    # 生成树
+    def build_tree():
+        root = TreeNode(node_num_of_subnode[0][0])
+        q0 = deque([[root,node_num_of_subnode[0][1]]])
+        index = 0
+        while q0:
+            current = q0.popleft()
+            for _ in range(current[1]):
+                index += 1
+                child = TreeNode(node_num_of_subnode[index][0])
+                q0.append([child,node_num_of_subnode[index][1]])
+                current[0].children.append(child)
+        return root
+
+    head = build_tree()
     result = []
-    print(tree)
 
     # 利用迭代来排序
-    def preorder(node):
-        for i in tree[node]:
+    def preorder(node: TreeNode):
+        for i in node.children:
             preorder(i)
-        result.append(node)
+        result.append(node.val)
 
-    preorder(head[0])
+    preorder(head)
     return result
 
 def main():
