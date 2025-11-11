@@ -1,7 +1,2 @@
-from math import sqrt
-i = 4
-print(list(range(i))[:2])
-print(list(range(i))[2])
-print(list(range(i))[3:])
-
-
+i = [1]
+print(i[:0],i[1:])
