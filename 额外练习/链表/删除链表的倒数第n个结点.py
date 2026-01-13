@@ -32,19 +32,20 @@ def linked_list_to_list(head):
 class Solution:
     def removeNthFromEnd(self, head, n: int):
 
-        def backstack(current_node=head, count=0):
-            if current_node:
-                count += 1
-                backstack(current_node.next, count)
-                print(linked_list_to_list(current_node))
+        def backtrack(node: ListNode, count):
+            if node:
+                size, next_next_node = backtrack(node.next, count + 1)
             else:
-                size = count
-            if size - count + 1 == n:
-                temp = current_node.next
-            elif size - count + 1 == n - 1:
-                current_node.next = temp
-        backstack()
-        return head
+                return count, None
+            if size - count == n:
+                return size, node.next
+            elif size - count == n + 1:
+                node.next = next_next_node
+            return size, node
+
+
+        _, ans = backtrack(head, 0)
+        return ans
 
 
 def run_tests():
